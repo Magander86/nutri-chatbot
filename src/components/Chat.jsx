@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { io } from "socket.io-client";
 
 import style from "./Chat.module.css";
@@ -31,6 +31,9 @@ const defaultMessages = [
 
 function Chat() {
   const [messages, setMessages] = useState(defaultMessages);
+  const [newBotMessage, setNewBotMessage] = useState("");
+  const [isBotMessageEnd, setIsBotMessageEnd] = useState(false);
+  // const newBotMessageRef = useRef("");
   const [input, setInput] = useState("");
   const [socket, setSocket] = useState(null);
 
@@ -46,12 +49,31 @@ function Chat() {
   useEffect(() => {
     if (socket) {
       socket.on("receive_message", (data) => {
-        setMessages((prevMessages) => {
+        console.log(data);
+        setNewBotMessage((prevMessages) => {
+          return prevMessages + data;
+        });
+      });
 
-        })
+      socket.on("message_end", () => {
+        setIsBotMessageEnd(true);
       });
     }
   }, [socket]);
+
+  useEffect(() => {
+    if (isBotMessageEnd) {
+      const botMessageObj = {
+        id: Date.now() + botName,
+        sender: botName,
+        message: <span>{newBotMessage}</span>,
+      };
+      setMessages((prevMessages) => [...prevMessages, botMessageObj]);
+
+      setNewBotMessage("");
+      setIsBotMessageEnd(false);
+    }
+  }, [isBotMessageEnd]);
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
@@ -59,16 +81,6 @@ function Chat() {
     socket.emit("send_message", input);
 
     setInput("");
-
-    setMessages((prevMessages) => {
-      const newBotMessage = {
-        id: Date.now() + botName,
-        sender: botName,
-        message: <span>{response}</span>,
-      };
-
-      return [...prevMessages, newBotMessage];
-    });
   };
 
   const onChangeHandler = (event) => {
@@ -80,7 +92,6 @@ function Chat() {
       setMessages((prevValues) => {
         // Split inputs by line breaks
         const lines = input.split("\n");
-        console.log(lines);
 
         const newMessage = {
           id: Date.now() + "user",
@@ -119,6 +130,11 @@ function Chat() {
               </div>
             );
           })}
+          {newBotMessage && (
+            <div className={style["chat__bot-message"]}>
+              <span>{newBotMessage}</span>
+            </div>
+          )}
         </div>
         <form className={style["chat__form"]} onSubmit={onSubmitHandler}>
           <textarea
