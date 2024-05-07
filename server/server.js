@@ -50,7 +50,7 @@ io.on("connection", (socket) => {
             },
           ],
         })
-        .on("text", (text) => {
+        .on("text", (text) => {          
           socket.emit("receive_message", text);
         })
         .on("end", () => socket.emit("message_end"));

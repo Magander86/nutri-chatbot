@@ -48,8 +48,7 @@ function Chat() {
 
   useEffect(() => {
     if (socket) {
-      socket.on("receive_message", (data) => {
-        console.log(data);
+      socket.on("receive_message", (data) => {        
         setNewBotMessage((prevMessages) => {
           return prevMessages + data;
         });
@@ -66,7 +65,9 @@ function Chat() {
       const botMessageObj = {
         id: Date.now() + botName,
         sender: botName,
-        message: <span>{newBotMessage}</span>,
+        message: (
+          <span style={{ whiteSpace: "pre-line" }}>{newBotMessage}</span>
+        ),
       };
       setMessages((prevMessages) => [...prevMessages, botMessageObj]);
 
@@ -132,7 +133,7 @@ function Chat() {
           })}
           {newBotMessage && (
             <div className={style["chat__bot-message"]}>
-              <span>{newBotMessage}</span>
+              <span style={{ whiteSpace: "pre-line" }}>{newBotMessage}</span>
             </div>
           )}
         </div>
