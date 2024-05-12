@@ -1,0 +1,17 @@
+.loader__container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  /* width: 80%; */
+  padding: 1rem 0px;
+  background: white;
+  border-radius: 8px;
+}
+
+.loader__ball {
+  width: 8px;
+  height: 8px;
+  background-color: #1c7d88;
+  border-radius: 100%;
+}

@@ -7,7 +7,6 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const port = process.env.PORT || 5000;
-const phraseArray = ["Coding", "is", "an", "art", "and", "science"];
 
 const app = express();
 app.use(cors());
@@ -24,10 +23,10 @@ const io = new Server(server, {
 const claudeApiKey = process.env.ANTHROPIC_APIKEY;
 const anthropic = new Anthropic({ apiKey: claudeApiKey });
 const systemResponse =
-  "Respond only in brazilian portuguese, respond only to questions about nutrition health, you are a doctor name Nora";
+  "Respond only in brazilian portuguese, respond only to questions about nutrition health, you are a nutritionist named Nora";
 
 io.on("connection", (socket) => {
-  console.log(`User connected: ${socket.id}`);
+  console.log(`User connected: ${socket.id}`);  
 
   socket.on("send_message", (data) => {
     console.log(`${data} from ${socket.id}`);
@@ -50,27 +49,13 @@ io.on("connection", (socket) => {
             },
           ],
         })
-        .on("text", (text) => {          
-          socket.emit("receive_message", text);
+        .on("text", (text) => {
+          io.to(socket.id).emit("receive_message", text);          
         })
         .on("end", () => socket.emit("message_end"));
     } catch (error) {
       console.log(error);
     }
-
-    // let counter = 0;
-
-    // phraseArray.forEach((word, index) => {
-    //   setTimeout(() => {
-    //     socket.emit("receive_message", { word });
-    //     counter++;
-
-    //     if (counter === phraseArray.length) {
-    //       socket.emit("message_end");
-    //       counter = 0;
-    //     }
-    //   }, 200 * index); // Multiply delay by index to stagger timeouts
-    // });
   });
 });
 

@@ -1,12 +1,13 @@
-.chat__body {  
+.chat__body {
   z-index: 80;
-  width: 600px;
+  min-width: 500px;
+  max-width: 800px;
   height: 70vh;
   overflow: hidden;
   margin: 3rem auto;
   background: #ffffff;
   border-radius: 8px;
-  box-shadow: 1px 4px 13px 5px rgba(0,0,0,0.43);
+  box-shadow: 1px 4px 13px 5px rgba(0, 0, 0, 0.43);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -23,22 +24,26 @@
 
 .chat__bot-message {
   color: #ffffff;
-  font-size: 0.8rem;
+  font-size: 1rem;
   max-width: 90%;
   padding: 8px;
   border-radius: 8px;
-  overflow-wrap: break-word;  
-  background: linear-gradient(90deg, rgba(61,157,132,1) 0%, rgba(22,108,119,1) 100%);
+  overflow-wrap: break-word;
+  background: linear-gradient(
+    90deg,
+    rgba(61, 157, 132, 1) 0%,
+    rgba(22, 108, 119, 1) 100%
+  );
 }
 
 .chat__user-message {
   color: #104b52;
-  font-size: 0.8rem;
+  font-size: 1rem;
   max-width: 90%;
   padding: 8px;
   align-self: flex-end;
   overflow-wrap: break-word;
-  border-radius: 8px;  
+  border-radius: 8px;
   background: #d1e8e2;
 }
 
@@ -47,23 +52,50 @@
   overflow: hidden;
 }
 
-.chat__form {
+.chat__header {
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 1rem;
+  background-color: #a9d6e5;
+  height: 40px;
+  padding: 0.6rem;
+}
+
+.chat__bot__img {
+  width: 40px;
+  height: 40px;  
+}
+
+.chat__form {
+  /* display: flex;
+  align-items: center;
+  justify-content: center; */
+  height: 50px;
   padding: 1rem 0px;
   background: #d1e8e2;
 }
 
+.chat__input-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+  height: 40px;
+  margin: 0 auto;
+  background-color: white;
+  border-radius: 8px;
+}
+
 .chat__input {
   padding: 10px;
-  border: 1px solid transparent;  
-  border-radius: 8px;  
+  border: 1px solid transparent;
+  border-radius: 8px;
   resize: none;
-  width: 80%;
+  width: 100%;
+  background: transparent;
 }
 
 .chat__input:focus {
-  border-bottom-color: #104b52;  
+  /* border-bottom-color: #104b52; */
   outline: none;
 }
