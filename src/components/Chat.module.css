@@ -2,7 +2,7 @@
   z-index: 80;
   min-width: 500px;
   max-width: 800px;
-  height: 70vh;
+  height: 90vh;
   overflow: hidden;
   margin: 3rem auto;
   background: #ffffff;
@@ -20,6 +20,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
+  padding-bottom: 0.8rem;
 }
 
 .chat__bot-message {
@@ -53,17 +54,42 @@
 }
 
 .chat__header {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  height: 60px;
+  padding: 1rem;
+  background-color: #a9d6e5;
+}
+
+.chat__header__bot {
   display: flex;
   align-items: center;
   gap: 1rem;
-  background-color: #a9d6e5;
-  height: 40px;
-  padding: 0.6rem;
 }
 
 .chat__bot__img {
   width: 40px;
-  height: 40px;  
+  height: 40px;
+  margin: 0px;
+}
+
+.chat__bot__description {
+  font-weight: 400;
+}
+
+.chat__bot__close-button {
+  display: flex;
+  color: #fc5656; /* Color of the "x" */
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 0px;
+  margin: 0px;
+  background-color: transparent;    
+  border: none;
 }
 
 .chat__form {

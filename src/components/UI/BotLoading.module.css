@@ -2,11 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  /* width: 80%; */
-  padding: 1rem 0px;
-  background: white;
-  border-radius: 8px;
+  gap: 10px;  
 }
 
 .loader__ball {

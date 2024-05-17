@@ -1,7 +1,7 @@
 import DocGuide from '../assets/female-doctor-to-guide-svgrepo-com.svg'
 import style from "./ChatCall.module.css"
 
-function ChatCall(props) {  
+function ChatCallToAction(props) {  
 
   return (
     <>
@@ -13,4 +13,4 @@ function ChatCall(props) {
   );
 }
 
-export default ChatCall;
+export default ChatCallToAction;

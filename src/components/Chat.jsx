@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { io } from "socket.io-client";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 
 import BotLoading from "./UI/BotLoading";
+import { FaCircleXmark } from "react-icons/fa6";
 
 import docGuideCropped from "../assets/female-doctor-guide-cropped.png";
 import style from "./Chat.module.css";
@@ -42,7 +43,7 @@ const inputVariants = {
 //   },
 // ];
 
-function Chat() {
+function Chat(props) {
   const [messages, setMessages] = useState([]);
   const [newBotMessage, setNewBotMessage] = useState("");
   const [isBotMessageEnd, setIsBotMessageEnd] = useState(false);
@@ -54,14 +55,14 @@ function Chat() {
     const newSocket = io.connect("http://localhost:5000");
     setSocket(newSocket);
 
-    // newSocket.emit("send_message", "se apresente em poucas linhas e diga que não pode substituir uma nutricionista de verdade");
+    newSocket.emit("send_message", `se apresente com o nome de ${botName} em poucas linhas e diga que não pode substituir uma nutricionista de verdade`);
 
-    // setIsBotTyping(true);
+    setIsBotTyping(true);
 
     return () => {
       newSocket.disconnect(); // Disconnect the socket when the component unmounts
     };
-  }, []); // Empty dependency array ensures this effect runs only once
+  }, []);
 
   useEffect(() => {
     if (socket) {
@@ -127,48 +128,66 @@ function Chat() {
   };
 
   return (
-    <div className="overlay">
-      <div className={style["chat__body"]}>
-        <div className={style["chat__header"]}>
-          <img
-            src={docGuideCropped}
-            alt="Doutora Guiando"
-            className={style["chat__bot__img"]}
-          />
-          <div
-            className={style["chat__bot__description"]}
-          >{`${botName} - Assistente Virtual`}</div>
-        </div>
-        <div className={style["chat__messages"]}>
-          {messages.map((message) => {
-            return (
+    <>
+      <motion.div
+        className="overlay"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+      >
+        <motion.div
+          className={style["chat__body"]}
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1 }}
+        >
+          <div className={style["chat__header"]}>
+            <div className={style["chat__header__bot"]}>
+              <img
+                src={docGuideCropped}
+                alt="Doutora Guiando"
+                className={style["chat__bot__img"]}
+              />
               <div
-                key={message.id}
-                className={
-                  message.sender === botName
-                    ? style["chat__bot-message"]
-                    : style["chat__user-message"]
-                }
-              >
-                {message.message}
-              </div>
-            );
-          })}
-          {newBotMessage && (
-            <div className={style["chat__bot-message"]}>
-              <span style={{ whiteSpace: "pre-line" }}>{newBotMessage}</span>
+                className={style["chat__bot__description"]}
+              >{`${botName} - Assistente Virtual`}</div>
             </div>
-          )}
-        </div>
+            <motion.button
+              type="button"
+              className={style["chat__bot__close-button"]}
+              whileHover={{ scale: 1.2 }}
+              onClick={() => props.onChatClose()}
+            >
+              <FaCircleXmark />
+            </motion.button>
+          </div>
+          <div className={style["chat__messages"]}>
+            {messages.map((message) => {
+              return (
+                <div
+                  key={message.id}
+                  className={
+                    message.sender === botName
+                      ? style["chat__bot-message"]
+                      : style["chat__user-message"]
+                  }
+                >
+                  {message.message}
+                </div>
+              );
+            })}
+            {newBotMessage && (
+              <div className={style["chat__bot-message"]}>
+                <span style={{ whiteSpace: "pre-line" }}>{newBotMessage}</span>
+              </div>
+            )}
+          </div>
 
-        <div className={style["chat__form"]}>
-          <motion.div
-            className={style["chat__input-box"]}
-            variants={inputVariants}
-            animate={isBotTyping ? "typing" : "input"}
-            transition={{ type: "spring", duration: 0.5 }}
-          >
-            <AnimatePresence initial={false}>
+          <div className={style["chat__form"]}>
+            <motion.div
+              className={style["chat__input-box"]}
+              variants={inputVariants}
+              animate={isBotTyping ? "typing" : "input"}
+              transition={{ type: "spring", duration: 0.5 }}
+            >
               {!isBotTyping && (
                 <textarea
                   className={style["chat__input"]}
@@ -180,11 +199,11 @@ function Chat() {
                 />
               )}
               {isBotTyping && <BotLoading />}
-            </AnimatePresence>
-          </motion.div>
-        </div>
-      </div>
-    </div>
+            </motion.div>
+          </div>
+        </motion.div>
+      </motion.div>
+    </>
   );
 }
 

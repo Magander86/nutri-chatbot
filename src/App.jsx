@@ -1,22 +1,32 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-import ChatCall from "./components/ChatCall";
+import ChatCallToAction from "./components/ChatCallToAction";
 import Chatbot from "./components/Chatbot";
 import DocPointing from "./assets/female-doctor-pointing-a-finger-svgrepo-com.svg";
 import DocGuide from "./assets/female-doctor-to-guide-svgrepo-com.svg";
 
 function App() {
-  const [isShowingChatCall, setIsShowingChatCall] = useState(false);
+  const [isShowingChatCallToAction, setIsShowingChatCall] = useState(false);
+
+  useEffect(() => {
+    if (!isShowingChatCallToAction) {
+      document.body.classList.remove("modal-open");
+    }
+  }, [isShowingChatCallToAction]);
 
   const chatCallClickHandler = () => {
     setIsShowingChatCall(true);
     document.body.classList.add("modal-open");
-  }
+  };
 
   return (
     <>
-      {!isShowingChatCall && <ChatCall onClick={chatCallClickHandler} />}
-      {isShowingChatCall && <Chatbot />}
+      {!isShowingChatCallToAction && (
+        <ChatCallToAction onClick={chatCallClickHandler} />
+      )}
+      {isShowingChatCallToAction && (
+        <Chatbot onChatClose={() => setIsShowingChatCall(false)} />
+      )}
 
       <div className="title">
         <h1 className="title__name">Nora Chatbot</h1>
